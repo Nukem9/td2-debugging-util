@@ -1,6 +1,23 @@
 #pragma once
 
 #include <Windows.h>
+#include <immintrin.h>
+
+static void CommitStackPages(size_t CommitSize)
+{
+	// Nearly equivalent to _chkstk()
+	const auto tib = reinterpret_cast<PNT_TIB>(_readgsbase_u64());
+
+	const auto top = reinterpret_cast<unsigned char *>(tib->StackBase) - 1;
+	const auto bottom = top - CommitSize;
+
+	for (auto i = top; i > bottom; i--)
+	{
+		auto c = *i;
+		SecureZeroMemory(i, 1);
+		*i = c;
+	}
+}
 
 static void RaiseHardError(const wchar_t *Message, const wchar_t *Title)
 {
