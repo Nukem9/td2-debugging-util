@@ -1,5 +1,3 @@
-# The Division 2 Debugging Utility
-
 A reverse engineering aid that disables EAC for the Uplay edition of The Division 2. This project was created for debugging purposes only and **will not** allow you to play online. No support is provided.
 
 ## Building
