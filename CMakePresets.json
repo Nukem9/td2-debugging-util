@@ -1,0 +1,101 @@
+{
+  "version": 6,
+  "include": [
+    "CMakeUserEnvVars.json"
+  ],
+  "configurePresets": [
+    {
+      "name": "config-base-vcpkg",
+      "hidden": true,
+      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+      "cacheVariables": {
+        "VCPKG_OVERLAY_PORTS": "${sourceDir}/vcpkg-ports"
+      }
+    },
+    {
+      "name": "config-base-cmake",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/bin/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES": "Debug;Release",
+        "CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE": "TRUE"
+      }
+    },
+    {
+      "name": "config-base-ninja-x86",
+      "hidden": true,
+      "generator": "Ninja Multi-Config",
+      "architecture": {
+        "value": "x86",
+        "strategy": "external"
+      },
+      "toolset": {
+        "value": "host=x86",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+        "CMAKE_CXX_FLAGS": "/MP /diagnostics:caret",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "config-base-ninja-amd64",
+      "hidden": true,
+      "generator": "Ninja Multi-Config",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static",
+        "CMAKE_CXX_FLAGS": "/MP /diagnostics:caret",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>"
+      }
+    },
+    {
+      "name": "arch-x86",
+      "inherits": [
+        "config-base-vcpkg",
+        "config-base-cmake",
+        "config-base-ninja-x86",
+        "config-envvars"
+      ]
+    },
+    {
+      "name": "arch-amd64",
+      "inherits": [
+        "config-base-vcpkg",
+        "config-base-cmake",
+        "config-base-ninja-amd64",
+        "config-envvars"
+      ]
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "x86-debug",
+      "configurePreset": "arch-x86",
+      "configuration": "Debug",
+      "displayName": "x86 Debug"
+    },
+    {
+      "name": "x86-release",
+      "configurePreset": "arch-x86",
+      "configuration": "Release",
+      "displayName": "x86 Release"
+    },
+    {
+      "name": "amd64-debug",
+      "configurePreset": "arch-amd64",
+      "configuration": "Debug",
+      "displayName": "amd64 Debug"
+    },
+    {
+      "name": "amd64-release",
+      "configurePreset": "arch-amd64",
+      "configuration": "Release",
+      "displayName": "amd64 Release"
+    }
+  ]
+}

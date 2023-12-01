@@ -1,0 +1,12 @@
+{
+  "version": 6,
+  "configurePresets": [
+    {
+      "name": "config-envvars",
+      "hidden": true,
+      "environment": {
+        "GAME_ROOT_DIRECTORY": "C:/Program Files (x86)/Ubisoft/Ubisoft Game Launcher/games/Tom Clancy's The Division 2"
+      }
+    }
+  ]
+}
